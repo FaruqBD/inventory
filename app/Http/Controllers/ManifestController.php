@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Courier;
+use App\Rules\ExcelRule;
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ManifestExport;
 
 class ManifestController extends Controller
 {
@@ -37,22 +41,9 @@ class ManifestController extends Controller
     }
 
 
-    public function fileImportExport()
+   public function store(Request $request)
     {
-       return view('pages.tracking_number_import');
-    }
-   
-    
-    public function fileImport(Request $request) 
-    {
-
-       $validator = $request->validate([
-        'file' => ['required', new ExcelRule($request->file('file'))],
-        ]);
-       
-             Excel::import(new TrackingNumber, $request->file('file')->store('temp'));
-        return view('pages.shipments');
-
-       
-    }
+         $courier = Courier::findOrFail($request->courier_id);
+        return Excel::download(new ManifestExport($request->manifestDate, $request->courier_id), 'Manifests-'.$courier->name.'-'.$request->manifestDate.'.xlsx');
+    }  
 }

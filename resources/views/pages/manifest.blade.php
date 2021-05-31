@@ -19,7 +19,7 @@
 	                           
 	                             <h3>Create Manifest</h3>
 	                        </div>
-                              	<form method="POST" action="{{ route('login') }}">
+                              	<form method="POST" action="{{ url('manifest') }}">
 	            					@csrf
 	                                <div class="form-group">
 				                        <label for="manifestDate" class="control-label">Select Date</label>
@@ -34,7 +34,8 @@
 		                                @endforeach
 		                                </select>
 				                    </div>
-	                                <button type="submit" class="btn btn-success btn-flat m-b-30 m-t-30">Submit</button>
+	                                <button type="submit" onclick="event.preventDefault();
+                                                this.closest('form').submit();" class="btn btn-success btn-flat m-b-30 m-t-30">Submit</button>
 	                                
 	                            </form>
                             </div>
