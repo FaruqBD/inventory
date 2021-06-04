@@ -153,7 +153,7 @@
                     </div>
 
                    <div>
-                      <button type="submit" class="btn btn-md btn-primary" id="saveBtn"  value="create" onclick="event.preventDefault();
+                      <button type="submit" class="btn btn-md btn-success" id="saveBtn"  value="create" onclick="event.preventDefault();
                                                 this.closest('ProductForm').submit();">Save</button>
                     </div>
 

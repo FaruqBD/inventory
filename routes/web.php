@@ -33,7 +33,7 @@ echo "Clear";
 
 
 Route::get('/', 'HomeController@index')->middleware('auth');
-Route::get('/dashboard', 'HomeController@index')->name('index')->middleware('auth');
+Route::get('dashboard', 'HomeController@index')->name('index')->middleware('auth');
 Route::resource('products','ProductController')->middleware('auth');
 Route::resource('product-names','ProductNameController')->middleware('auth');
 Route::resource('godowns','GodownController')->middleware('auth');
@@ -46,15 +46,22 @@ Route::resource('packlists','PackListController')->middleware('auth');
 Route::resource('menifest','ManifestController')->middleware('auth');
 
 
-Route::get('/create-menifest', 'ManifestController@create_menifest')->name('create-menifest')->middleware('auth');
-Route::get('/single-product-outward', 'ProductController@single_product_outward')->name('single-product-outward')->middleware('auth');
+Route::get('all-menifests', 'ManifestController@all_menifests')->name('all-menifests')->middleware('auth');
+Route::post('save-menifest', 'ManifestController@store_menifest')->name('save-menifest')->middleware('auth');
+Route::get('add-menifest-list/{id}', 'ManifestController@create_menifest')->name('add-menifest-list')->middleware('auth');
 
 
-Route::get('/product_name/{id}', 'ProductController@product_name')->name('product_name')->middleware('auth');
-Route::get('/product_category/{id}', 'ProductController@product_category')->name('product_category')->middleware('auth');
-Route::get('/product_godown/{id}', 'ProductController@product_godown')->name('product_godown')->middleware('auth');
-Route::get('/table_category/{id}', 'ProductController@table_category')->name('table_category')->middleware('auth');
-Route::get('/create-packlist', 'PackListController@index')->name('create-packlist')->middleware('auth');
+Route::get('single-product-outward', 'SinglePackListController@single_product_outward')->name('single-product-outward')->middleware('auth');
+Route::get('single-packlist', 'SinglePackListController@single_packlist')->name('single-packlist')->middleware('auth');
+Route::post('single-packlist', 'SinglePackListController@single_packlist_store')->name('single-packlist')->middleware('auth');
+Route::post('single-packlist-pdf', 'SinglePackListController@single_packlist_pdf')->name('single-packlist-pdf')->middleware('auth');
+
+
+Route::get('product_name/{id}', 'ProductController@product_name')->name('product_name')->middleware('auth');
+Route::get('product_category/{id}', 'ProductController@product_category')->name('product_category')->middleware('auth');
+Route::get('product_godown/{id}', 'ProductController@product_godown')->name('product_godown')->middleware('auth');
+Route::get('table_category/{id}', 'ProductController@table_category')->name('table_category')->middleware('auth');
+Route::get('create-packlist', 'PackListController@index')->name('create-packlist')->middleware('auth');
 
 
 Route::get('packlists-godown/{id}', 'PackListController@packlist_godown')->name('packlists-godown')->middleware('auth');
@@ -63,9 +70,9 @@ Route::get('packlists-export', 'PackListController@packlist_export')->name('pack
 Route::get('clear-packlist', 'PackListController@clear_packlist')->name('clear-packlist')->middleware('auth');
 
 
-Route::get('/shipment_type/{id}', 'ShipmentController@shipment_type')->name('shipment_type')->middleware('auth');
-Route::get('/courier_name/{id}', 'ShipmentController@courier_name')->name('courier_name')->middleware('auth');
-Route::get('/manifest_courier_name/{id}', 'ManifestController@manifest_courier_name')->name('manifest_courier_name')->middleware('auth');
+Route::get('shipment_type/{id}', 'ShipmentController@shipment_type')->name('shipment_type')->middleware('auth');
+Route::get('courier_name/{id}', 'ShipmentController@courier_name')->name('courier_name')->middleware('auth');
+Route::get('manifest_courier_name/{id}', 'ManifestController@manifest_courier_name')->name('manifest_courier_name')->middleware('auth');
 
 Route::get('products-import-export', [ProductController::class, 'fileImportExport'])->middleware('auth');
 Route::get('tracking-number-import', [ShipmentController::class, 'fileImportExport'])->middleware('auth');
@@ -73,7 +80,7 @@ Route::post('file_import', [ProductController::class, 'fileImport'])->name('file
 Route::post('tracking-number-import', [ShipmentController::class, 'fileImport'])->middleware('auth');
 Route::get('file-export', [ProductController::class, 'fileExport'])->name('file-export')->middleware('auth');
 
-Route::post('/autocomplete-products', 'AutocompleteController@products')->name('autocomplete-products');
-Route::post('/autocomplete-all-products', 'AutocompleteController@product_name')->name('autocomplete-all-products');
+Route::post('autocomplete-products', 'AutocompleteController@products')->name('autocomplete-products');
+Route::post('autocomplete-all-products', 'AutocompleteController@product_name')->name('autocomplete-all-products');
 
 require __DIR__.'/auth.php';

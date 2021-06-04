@@ -15,7 +15,7 @@ class CreatePacklistsTable extends Migration
     {
         Schema::create('packlists', function (Blueprint $table) {
         $table->bigIncrements('id');
-        $table->string('name');
+        $table->string('product_id');
         $table->string('godown');
         $table->string('available_qty');
         $table->string('required_qty');

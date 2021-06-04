@@ -207,8 +207,5 @@ class ProductController extends Controller
         return Excel::download(new ProductExport, 'Products-'. $date .'.xlsx');
     }    
 
-    public function single_product_outward()
-    {
-       return view('pages.single_product_outward'); 
-    }
+    
 }

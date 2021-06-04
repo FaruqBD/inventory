@@ -9,7 +9,7 @@
                     <div class="col-lg-8 p-r-0 title-margin-right">
                         <div class="page-header">
                             <div class="page-title">
-                                <h1>Create Menifest 
+                                <h1>{{$menifest->name}} Menifest 
                                      <a href="{{url('manifest')}}" class="btn btn-success m-b-10 m-l-5">
                                             Print Menifest
                                     </a>
@@ -23,8 +23,8 @@
                         <div class="page-header">
                             <div class="page-title">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
-                                    <li class="breadcrumb-item active">Create Menifest</li>
+                                    <li class="breadcrumb-item"><a href="{{url('/')}}">All Menifest</a></li>
+                                    <li class="breadcrumb-item active">{{$menifest->name}} Menifest</li>
                                 </ol>
                             </div>
                         </div>

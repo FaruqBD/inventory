@@ -101,7 +101,7 @@
                           </div>
                           <div class="col-md-12">
                            <button type="button" class="btn btn-success" id="saveBtn" onclick="event.preventDefault();
-                                                this.closest('form').submit();">Save Item</button>
+                                                this.closest('form').submit();" >Save Item</button>
                         </div>
                         </div>
                       </form>
@@ -145,7 +145,8 @@
             </div>
         </div>
     </div>
-    <script>
+
+<script>
 $(document).ready(function(){
 
        $("#product_name").focus();

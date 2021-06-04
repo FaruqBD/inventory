@@ -14,13 +14,10 @@
                                             <i class="fa fa-plus"></i> Add New
                                     </a>
                                    
-                                    <a href="{{url('create-menifest')}}" class="btn btn-success m-b-10 m-l-5">
-                                            Create Menifest
+                                    <a href="{{url('all-menifests')}}" class="btn btn-success m-b-10 m-l-5">
+                                            All Menifest
                                     </a>
-                                     <a href="{{url('manifest')}}" class="btn btn-success m-b-10 m-l-5">
-                                            Print Menifest
-                                    </a>
-                                   
+                                    
                                 </h1>
                             </div>
                         </div>

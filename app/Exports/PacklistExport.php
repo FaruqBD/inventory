@@ -16,6 +16,7 @@ class PacklistExport implements FromCollection, WithHeadings
          $packlists = DB::table('packlists')
                     ->join('products', 'packlists.product_id', '=', 'products.id' )
                     ->join('product_names', 'products.product_name_id', '=', 'product_names.id' )
+                    ->where('packlists.single', '=', 0)
                     ->orderBy('packlists.product_id', 'desc')                            
                     ->get(['product_names.name', 'packlists.godown', 'packlists.available_qty', 'packlists.required_qty']);
        

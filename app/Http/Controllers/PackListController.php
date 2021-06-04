@@ -6,6 +6,7 @@ use App\Models\Packlist;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Godown;
+use App\Models\SinglePacklist;
 use Illuminate\Http\Request;
 use DataTables;
 use Illuminate\Support\Facades\DB;
@@ -14,6 +15,7 @@ use App\Imports\ProductImport;
 use App\Exports\PacklistExport;
 use Redirect,Response;
 use SweetAlert;
+use PDF;
 
 class PackListController extends Controller
 {
@@ -148,6 +150,9 @@ class PackListController extends Controller
         DB::table('packlists')->delete();
         return back()->with('success', 'Packlist cleared successfully.');
     }   
+
+
+   
 
 
 
