@@ -17,10 +17,7 @@ class ProductImport implements ToModel, WithHeadingRow
     public function model(array $row)
     {
         return new Product([
-            'product_name_id'     => $row['Product Name'],
-            'quantity'    => $row['quantity'],
-            'godown_id'    => $row['godown'],
-            'remarks'    => $row['remarks'],
+            'name'     => $row['Product Name'],
         ]);
     }
 }

@@ -17,9 +17,7 @@
                                     <a href="{{ route('file-export') }}" class="btn btn-success m-b-10 m-l-5">
                                             <i class="fa fa-minus"></i> Excel Export
                                     </a>
-                                    <a href="{{ url('products-import-export')}}" class="btn btn-success m-b-10 m-l-5">
-                                            <i class="fa fa-plus"></i> <i class="fa fa-plus"></i> Excel Import
-                                    </a>
+                                   
                                     <a href="{{ route('create-packlist') }}" class="btn btn-success m-b-10 m-l-5">
                                             </i> Create PackList
                                     </a>
@@ -115,14 +113,13 @@
             <div class="modal-body">
                 <form id="ProductForm" name="ProductForm" class="form-horizontal">
                     {!! csrf_field() !!}
-                   <input type="hidden" name="product_id" id="product_id">
                     
                      <div class="form-group">
-                        <label for="product_name_id" class="control-label">Product Name</label>
-                        <select id="product_name_id" class="form-control" name="product_name_id"></select>
-                         @if ($errors->has('product_name_id'))
-                            <span class="text-danger">{{ $errors->first('product_name_id') }}</span>
-                        @endif
+                        <label for="product_name" class="control-label">Product Name</label>
+                        <input type="text"name="product_name" id="product_name" class="form-control input-lg" placeholder="Enter Product Name" autocomplete="off"/>
+                            <input type="hidden" name="product_id" id="product_id">
+                            <input type="hidden" name="product_name_id" id="product_name_id">
+                          <div  id="productList"></div>
                     </div>
                     
                     <div class="form-group">
@@ -156,7 +153,8 @@
                     </div>
 
                    <div>
-                      <button type="submit" class="btn btn-md btn-primary" id="saveBtn" value="create">Save</button>
+                      <button type="submit" class="btn btn-md btn-primary" id="saveBtn"  value="create" onclick="event.preventDefault();
+                                                this.closest('ProductForm').submit();">Save</button>
                     </div>
 
                 </form>
@@ -169,6 +167,34 @@
 
 <script type="text/javascript">
   $(function () {
+
+     $("#product_name").focus();
+
+ $('#product_name').keyup(function(){ 
+        var query = $(this).val();
+        if(query != '')
+        {
+         var _token = $('input[name="_token"]').val();
+         $.ajax({
+          url:"{{ route('autocomplete-all-products') }}",
+          method:"POST",
+          data:{query:query, _token:_token},
+          success:function(data){
+           $('#productList').fadeIn();  
+                    $('#productList').html(data);
+          }
+         });
+        }
+    });
+
+   $(document).on('click', '#productList li', function(){  
+        $('#product_name').val($(this).text());  
+        $('#productList').fadeOut();  
+        var id = $(this).attr('data-id');
+        $("#product_name_id").val(id);
+          
+    });  
+
 
       $.ajaxSetup({
          headers: {
@@ -212,11 +238,12 @@
           $('#saveBtn').val("edit-products");
           $('#ajaxModel').modal('show');
           $('#product_id').val(data.id);
+          $('#product_name_id').val(data.product_name_id);
           $('#quantity').val(data.quantity);
           $('#remarks').val(data.remarks);
           $('#saveBtn').html('Update');
-          var product_name_id = data.product_name_id;
-            product_name_edit(product_name_id);
+          var product_name = data.product_name_id;
+            product_name_edit(product_name);
           var godown_id = data.godown_id;
             godown_edit(godown_id);
           var category_id = data.category_id;
@@ -277,25 +304,14 @@
         });
         return false;
     }
-    function product_name(){
-        url = '/product_name/'+0;
+   
+     function product_name_edit(product_name){
+        url = '/product_name/'+product_name;
         $.ajax({
             url:url,
             method:"GET",
             success:function(data){
-                $('#product_name_id').html(data);
-            }
-        });
-        return false;
-    }
-
-     function product_name_edit(product_name_id){
-        url = '/product_name/'+product_name_id;
-        $.ajax({
-            url:url,
-            method:"GET",
-            success:function(data){
-                $('#product_name_id').html(data);
+                $('#product_name').val(data);
             }
         });
         return false;

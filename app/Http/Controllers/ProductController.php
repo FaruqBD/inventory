@@ -58,18 +58,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
 
-        $request->validate([
-              
-                'product_name_id' => 'required',
-                'quantity' => 'required',
-                'godown_id' => 'required',
-                'category_id' => 'nullable',
-                'remarks' => 'nullable'
-                ], [
-                'product_name_id.required' => 'Product name is required',
-                'quantity.required' => 'Product quantity is required',
-                'godown_id.required' => 'Select godown name',
-            ]);
+       // dd($request);
         $product = Product::where('product_name_id', '=', $request->product_name_id)
                             ->Where('godown_id', '=', $request->godown_id)
                             ->first();
@@ -128,23 +117,8 @@ class ProductController extends Controller
         return response()->json(['success'=>'Product deleted!']);
     }
     public function product_name($id){
-        $product_name = ProductName::latest()->get();
-        $output = '';
-        if(!$product_name->isEmpty()){
-            
-            foreach ($product_name as $brand){
-                $product_name_id = $brand->id;
-                $product_name = $brand->name;
-                if($id === 0)
-                {
-                     $output .= '<option value="'.$product_name_id.'">'.$product_name.'</option>';
-                }else{
-        
-                $output .= '<option value="'.$product_name_id.'" '.(($product_name_id == $id) ? 'selected="selected"':"").'>'.$product_name.'</option>';
-                }
-            }
-            
-        }
+        $product_name = ProductName::findOrFail($id);
+        $output = $product_name->name;
 
         return $output;
     }
@@ -229,6 +203,12 @@ class ProductController extends Controller
 
     public function fileExport() 
     {
-        return Excel::download(new ProductExport, 'Products.xlsx');
+        $date = date('Y-m-d');
+        return Excel::download(new ProductExport, 'Products-'. $date .'.xlsx');
     }    
+
+    public function single_product_outward()
+    {
+       return view('pages.single_product_outward'); 
+    }
 }

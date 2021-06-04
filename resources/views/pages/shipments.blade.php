@@ -1,6 +1,5 @@
 @extends('layouts.master')
  <meta name="csrf-token" content="{{ csrf_token() }}">
-
 @section('content')
 
     <div class="content-wrap">
@@ -14,8 +13,12 @@
                                     <a href="javascript:void(0)" class="btn btn-success m-b-10 m-l-5" id="createNewShipment">
                                             <i class="fa fa-plus"></i> Add New
                                     </a>
-                                    <a href="javascript:void(0)" class="btn btn-success m-b-10 m-l-5" id="createManifest">
-                                            Create Manifest
+                                   
+                                    <a href="{{url('create-menifest')}}" class="btn btn-success m-b-10 m-l-5">
+                                            Create Menifest
+                                    </a>
+                                     <a href="{{url('manifest')}}" class="btn btn-success m-b-10 m-l-5">
+                                            Print Menifest
                                     </a>
                                    
                                 </h1>
@@ -35,7 +38,84 @@
                     </div>
                     <!-- /# column -->
                 </div>
+                 @if($errors->any())
+                    <div class="alert alert-danger text-center">
+                        <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                @if(session('success'))
+                    <div class="alert alert-success text-center">{{session('success')}}</div>
+                @endif
+
+                @if(session('error'))
+                    <div class="alert alert-danger text-center">{{session('error')}}</div>
+                @endif          
+
                 <!-- /# row -->
+                <section id="main-content">
+                    <div class="row">
+                    <div class="col-lg-12">
+                            <div class="card">
+                    <form name="inputForm" action="{{ url('shipments') }}" method="POST">
+                        {!! csrf_field() !!}
+                        <div class="row">
+                           <div class="col-md-3">
+                            <label class="control-label">Shipment Type</label>
+                            <select class="form-control form-white"name="shipment_type_id" id="shipment_type">
+                               @foreach($shipment_types as $shipment_type)
+                                    @if (old('shipment_type_id') == $shipment_type->id)
+                                          <option value="{{ $shipment_type->id }}" selected>{{ $shipment_type->name }}</option>
+                                    @else
+                                         <option value="{{ $shipment_type->id }}">{{ $shipment_type->name }}</option>
+                                    @endif
+                                    
+                                @endforeach  
+                            </select>
+                          </div>
+                          <div class="col-md-3">
+                            <label class="control-label">Courier Name</label>
+                            <select class="form-control form-white"name="courier_id" id="courier">
+                                 @foreach($couriers as $courier)
+                                    @if (old('courier_id') == $courier->id)
+                                          <option value="{{ $courier->id }}" selected>{{ $courier->name }}</option>
+                                    @else
+                                          <option value="{{ $courier->id }}">{{ $courier->name }}</option>
+                                    @endif
+                                    
+                                @endforeach  
+                                 
+                            </select>
+                          </div>
+                          <div class="col-md-3">
+                            <label class="control-label">Remarks</label>
+                            <input class="form-control form-white" type="text" value="{{ old('remarks') }}" name="remarks" id="remarks" required/>
+                          </div>
+                           <div class="col-md-3">
+                            <label class="control-label">Tracking Number</label>
+                            <input class="form-control form-white" type="text" name="tracking_number" id="tracking_number" required />
+                             @if ($errors->has('tracking_number'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('tracking_number') }}</strong>
+                            </span>
+                            @endif
+                          </div>
+                          <div class="col-md-12">
+                           <button type="button" id="submitBtn" class="btn btn-success" onclick="event.preventDefault();
+                                                this.closest('form').submit();">Save Item</button>
+                        </div>
+                        </div>
+                      </form>
+            </div>
+            </div>
+            </div>
+                </section>
+
+
                 <section id="main-content">
                     <div class="row">
                         <div class="col-lg-12">
@@ -49,6 +129,7 @@
                                                     <th>Shipment Type</th>
                                                     <th>Courier Name</th>
                                                     <th>Tracking Number</th>
+                                                    <th>Date</th>
                                                     <th>Remarks</th>
                                                     <th class="text-center">Action</th>
                                                 </tr>
@@ -150,8 +231,13 @@
       <!-- END MODAL -->
 
 <script type="text/javascript">
+     $(document).ready(function () {
+       $("#tracking_number").focus();
+    });
+
   $(function () {
 
+   
       $.ajaxSetup({
          headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -167,6 +253,7 @@
             {data: 'shipment_type_id', name: 'shipment_type_id'},
             {data: 'courier_id', name: 'courier_id'},
             {data: 'tracking_number', name: 'tracking_number'},
+            {data: 'shipment_create_date', name: 'shipment_create_date'},
             {data: 'remarks', name: 'remarks'},
             {data: 'action', name: 'action', orderable: false, searchable: false}
         ]
@@ -340,6 +427,12 @@
         });
         return false;
     }
+
+    $("#tracking_number").keyup(function(event) {
+    if (event.keyCode === 13) {
+        $("#submitBtn").click();
+    }
+});
 
     
 

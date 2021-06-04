@@ -19,7 +19,7 @@ class ProductExport implements FromCollection, WithHeadings
                     ->join('categories', 'products.category_id', '=', 'categories.id' )
                     ->join('godowns', 'products.godown_id', '=', 'godowns.id' )
                     ->orderBy('products.created_at', 'desc')
-                    ->get(array('product_names.name as product_name_id', 'products.quantity as quantity', 'categories.name as category_id', 'godowns.name as godown_id', 'products.remarks as remarks' ));
+                    ->get(array('product_names.name as product_name_id', 'products.quantity as quantity', 'godowns.name as godown_id', 'categories.name as category_id', 'products.remarks as remarks' ));
 
         return  $products;
     }

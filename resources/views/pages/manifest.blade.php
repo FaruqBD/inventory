@@ -17,13 +17,18 @@
                             <div class="card">
                             	<div class="login-logo">
 	                           
-	                             <h3>Create Manifest</h3>
+	                             <h3>Print Menifest</h3>
 	                        </div>
                               	<form method="POST" action="{{ url('manifest') }}">
 	            					@csrf
 	                                <div class="form-group">
-				                        <label for="manifestDate" class="control-label">Select Date</label>
-				                        <input class="form-control" type="date" id="manifestDate" name="manifestDate">
+				                        <label for="manifestDate" class="control-label">Date From</label>
+				                        <input class="form-control" type="date" id="manifestDate_from" name="manifestDate_from">
+				                    </div>
+
+				                    <div class="form-group">
+				                        <label for="manifestDate" class="control-label">Date To</label>
+				                        <input class="form-control" type="date" id="manifestDate_to" name="manifestDate_to">
 				                    </div>
 				                    
 				                    <div class="form-group">

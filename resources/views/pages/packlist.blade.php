@@ -39,9 +39,10 @@
                         </div>
                     </div>
                     <!-- /# column -->
-                     @if($errors->any())
-                    <div class="alert alert-danger">
-                        <p><strong>Opps Something went wrong</strong></p>
+                   
+                </div>
+                 @if($errors->any())
+                    <div class="alert alert-danger text-center">
                         <ul>
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -51,29 +52,25 @@
                 @endif
 
                 @if(session('success'))
-                    <div class="alert alert-success">{{session('success')}}</div>
+                    <div class="alert alert-success text-center">{{session('success')}}</div>
                 @endif
 
                 @if(session('error'))
-                    <div class="alert alert-danger">{{session('error')}}</div>
-                @endif          
-
-                </div>
+                    <div class="alert alert-danger text-center">{{session('error')}}</div>
+                @endif        
 
                 <section id="main-content">
                 	<div class="row">
                 	<div class="col-lg-12">
                             <div class="card">
-                	<form id="packlistForm" action="{{ url('packlists') }}" method="POST">
+                	<form name="packlistForm" id="packlistForm" action="{{ url('packlists') }}" method="POST">
                         {!! csrf_field() !!}
                         <div class="row">
                            <div class="col-md-5">
-                            <label class="control-label">Select Product Name</label>
-                            <select class="form-control form-white"name="product_name" id="product_name">
-                               @foreach($product_names as $product_name)
-                                    <option id= "product_name" value="{{ $product_name->id }}">{{ $product_name->name }}</option>
-                                @endforeach
-                            </select>
+                            <label class="control-label">Product Name</label>
+                            <input type="text"name="product_name" id="product_name" class="form-control input-lg" placeholder="Enter Product Name" autocomplete="off"/>
+                            <input type="hidden" name="product_id" id="product_id">
+                          <div  id="productList"></div>
                           </div>
                           <div class="col-md-3">
                             <label class="control-label">Select Godown</label>
@@ -82,17 +79,29 @@
                                     <option id= "godown" value="{{ $godown->id }}">{{ $godown->name }}</option>
                                 @endforeach
 							</select>
+                            <input type="hidden" id="product_name_id">
                           </div>
                           <div class="col-md-2">
                             <label class="control-label">Available Quantity</label>
                             <input class="form-control form-white" type="text" name="available_qty" id="available_qty" readonly/>
+                             @if ($errors->has('available_qty'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('available_qty') }}</strong>
+                            </span>
+                            @endif
                           </div>
                           <div class="col-md-2">
                             <label class="control-label">Required Quantity</label>
                             <input class="form-control form-white" type="text" name="required_qty" id="required_qty" required/>
+                             @if ($errors->has('required_qty'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('required_qty') }}</strong>
+                            </span>
+                            @endif
                           </div>
                           <div class="col-md-12">
-                           <button type="button" class="btn btn-success" id="saveBtn">Save Item</button>
+                           <button type="button" class="btn btn-success" id="saveBtn" onclick="event.preventDefault();
+                                                this.closest('form').submit();">Save Item</button>
                         </div>
                         </div>
                       </form>
@@ -136,9 +145,70 @@
             </div>
         </div>
     </div>
-    
+    <script>
+$(document).ready(function(){
 
-<script type="text/javascript">
+       $("#product_name").focus();
+
+ $('#product_name').keyup(function(){ 
+        var query = $(this).val();
+        if(query != '')
+        {
+         var _token = $('input[name="_token"]').val();
+         $.ajax({
+          url:"{{ route('autocomplete-products') }}",
+          method:"POST",
+          data:{query:query, _token:_token},
+          success:function(data){
+           $('#productList').fadeIn();  
+                    $('#productList').html(data);
+          }
+         });
+        }
+    });
+
+    $(document).on('click', '#productList li', function(){  
+        $('#product_name').val($(this).text());  
+        $('#productList').fadeOut();  
+        var id = $(this).attr('data-id');
+
+        // console.log(id);
+         // var id = e.target.value;
+         $.get('packlists-godown/' + id, function (data) {
+     
+              $("#godown").empty();
+              $("#required_qty").html();
+               $("#available_qty").val(data[0].quantity);
+               $("#product_name_id").val(data[0].product_name_id);
+               $("#product_id").val(id);
+               // console.log(data[0].product_name_id);
+
+              $.each(data, function(i, item) {
+      
+                     $("#godown").append("<option value="+item.id+">"+item.name+"</option>");
+         
+               });
+          });  
+    });  
+
+
+ $("#godown").change(function (e) {
+   e.preventDefault();
+         var godown_id = e.target.value;
+          var product_name_id = $('#product_name_id').val();
+          // console.log(godown_id);
+         console.log(product_name_id);
+         $.get('packlists-quantity/' + product_name_id + '/' + godown_id, function (data) {
+               $("#available_qty").empty();
+               $("#available_qty").val(data[0].quantity);
+
+             
+          });  
+       });
+
+
+});
+
   $(function () {
 
       $.ajaxSetup({
@@ -153,7 +223,7 @@
         ajax: "{{ url('packlists') }}",
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-            {data: 'product_name', name: 'product_name'},
+            {data: 'name', name: 'product_id'},
             {data: 'godown', name: 'godown'},
             {data: 'available_qty', name: 'available_qty'},
             {data: 'required_qty', name: 'required_qty'},
@@ -162,31 +232,6 @@
     });
 
 
-    $('#saveBtn').click(function (e) {
-       document.onclick = function(e) {
-    if (e.target instanceof HTMLAnchorElement) e.preventDefault();
-}
-       
-        var product_name = $('#product_name').val();
-        var godown = $('#godown').val();
-        var available_qty = $('#available_qty').val();
-        var required_qty = $('#required_qty').val();
-
-
-        $.ajax({
-            url: "{{url('packlists')}}",
-            type:"POST",
-            data: {'product_name' : product_name, 'godown' : godown, 'available_qty' : available_qty, 'required_qty' : required_qty},
-            success: function (data) {
-               table.draw();
-              location.reload();
-
-          },
-          error: function (data) {
-              console.log('Error:', data);
-          }
-        });
-    });
 
     $('body').on('click', '.deletePackList', function () {
 
@@ -214,38 +259,6 @@
        });
     });
    
- $("#product_name").change(function (e) {
-            console.log(e);
-  
-         var id = e.target.value;
-         $.get('packlists-godown/' + id, function (data) {
-             //console.log(data);
-     
-              $("#godown").empty();
-              $("#required_qty").html();
-               $("#available_qty").val(data[0].quantity);
-
-              $.each(data, function(i, item) {
-      
-                     $("#godown").append("<option value="+item.id+">"+item.name+"</option>");
-         
-               });
-          });  
-       });
-
- $("#godown").change(function (e) {
-            console.log(e);
-   e.preventDefault();
-         var godown_id = e.target.value;
-         var product_name_id = $("#product_name").val();
-         $.get('packlists-quantity/' + product_name_id + '/' + godown_id, function (data) {
-            console.log(data.quantity);
-               $("#available_qty").empty();
-               $("#available_qty").val(data[0].quantity);
-
-             
-          });  
-       });
 
 
     $('#excelSave').click(function (e) {
@@ -268,6 +281,20 @@
                  }
 
         });
+
+    
+
+     $("#required_qty").keyup(function(event) {
+    if (event.keyCode === 13) {
+        $("#saveBtn").click();
+    }
+
+   });
+
+
+
+
+
        
 
   });

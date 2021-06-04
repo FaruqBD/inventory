@@ -15,14 +15,17 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="{{ url('products') }}"> All Products </a>
           <a class="dropdown-item" href="{{ url('products-import-export') }}"> Excel Import </a>
+          <a class="dropdown-item" href="{{ url('file-export') }}"> All Products Export</a>
           <a class="dropdown-item" href="{{ route('create-packlist') }}">Create PickList </a>
+          <a class="dropdown-item" href="{{ url('single-product-outward') }}">Single Product Outward </a>
         </div>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="{{ url('shipments') }}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shipments</a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="{{ url('shipments') }}">All Shipments</a>
-          <a class="dropdown-item" href="{{ url('manifest') }}">Create Manifest</a>
+          <a class="dropdown-item" href="{{ url('create-menifest') }}">Create Menifest</a>
+          <a class="dropdown-item" href="{{ url('menifest') }}">Print Menifest</a>
           <a class="dropdown-item" href="{{ url('tracking-number-import') }}">Tracking Number Import</a>
         </div>
       </li>

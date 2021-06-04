@@ -43,7 +43,11 @@ Route::resource('categories','CategoryController')->middleware('auth');
 Route::resource('couriers','CourierController')->middleware('auth');
 Route::resource('customers','CustomerController')->middleware('auth');
 Route::resource('packlists','PackListController')->middleware('auth');
-Route::resource('manifest','ManifestController')->middleware('auth');
+Route::resource('menifest','ManifestController')->middleware('auth');
+
+
+Route::get('/create-menifest', 'ManifestController@create_menifest')->name('create-menifest')->middleware('auth');
+Route::get('/single-product-outward', 'ProductController@single_product_outward')->name('single-product-outward')->middleware('auth');
 
 
 Route::get('/product_name/{id}', 'ProductController@product_name')->name('product_name')->middleware('auth');
@@ -68,5 +72,8 @@ Route::get('tracking-number-import', [ShipmentController::class, 'fileImportExpo
 Route::post('file_import', [ProductController::class, 'fileImport'])->name('file_import')->middleware('auth');
 Route::post('tracking-number-import', [ShipmentController::class, 'fileImport'])->middleware('auth');
 Route::get('file-export', [ProductController::class, 'fileExport'])->name('file-export')->middleware('auth');
+
+Route::post('/autocomplete-products', 'AutocompleteController@products')->name('autocomplete-products');
+Route::post('/autocomplete-all-products', 'AutocompleteController@product_name')->name('autocomplete-all-products');
 
 require __DIR__.'/auth.php';

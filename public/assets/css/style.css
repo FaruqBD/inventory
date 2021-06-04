@@ -698,6 +698,10 @@ a.dt-button.active:not(.disabled) {
   padding: 0 10px;
   font-size: 14px;
 }
+.dropdown-item a:hover {
+  background-color: #000!important;
+}
+
 /*    Header
 ---------------*/
 .header {
@@ -4514,11 +4518,20 @@ h6.h1 {
 .save-button{
   margin-left: 16px;
 }
-.may-button{
-    
+li a{
+    color: #000;
+}
+li a:hover{
+    color: #F48193;
 }
 /*  10 - media screen and (max-width: 320px)
 ---------------------------------------------------------------------- */
 /*---------------------------------------------------------------*/
 /* Retina */
 /*---------------------------------------------------------------*/
+@media all and (min-width: 992px) {
+  .navbar .nav-item .dropdown-menu{ display: none; }
+  .navbar .nav-item:hover .nav-link{   }
+  .navbar .nav-item:hover .dropdown-menu{ display: block; }
+  .navbar .nav-item .dropdown-menu{ margin-top:0; }
+}

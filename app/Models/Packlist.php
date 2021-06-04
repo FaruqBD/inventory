@@ -10,7 +10,7 @@ class Packlist extends Model
     use HasFactory;
     protected $fillable =  [
 
-        'product_name', 'godown', 'available_qty', 'required_qty'
+        'product_id', 'godown', 'available_qty', 'required_qty'
 
     ];
 }

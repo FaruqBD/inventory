@@ -27,7 +27,7 @@
         <h2 class="mb-4">
             Please choose an Excel File to import Products
         </h2>
-        <p>Excel file must contain at least 3 columns : product_name_id, quantity, godown_id</p>
+        <p>Excel file must contain at least 1 columns : Product Name</p>
 
         <form action="{{ route('file_import') }}" method="POST" enctype="multipart/form-data" id="import-form">
             @csrf

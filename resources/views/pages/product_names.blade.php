@@ -14,6 +14,9 @@
                                     <a href="javascript:void(0)" class="btn btn-success m-b-10 m-l-5" id="createNewProductName">
                                             <i class="fa fa-plus"></i> Add New
                                     </a>
+                                     <a href="{{ url('products-import-export')}}" class="btn btn-success m-b-10 m-l-5">
+                                            <i class="fa fa-plus"></i> <i class="fa fa-plus"></i> Excel Import
+                                    </a>
                                    
                                 </h1>
                             </div>

@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Shipment;
 use App\Models\ShipmentType;
 use App\Models\Courier;
@@ -11,8 +10,10 @@ use App\Rules\ExcelRule;
 use App\Models\TrackingNumber;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+Use Alert;
 class ShipmentController extends Controller
 {
+
      public function index(Request $request)
     {
          
@@ -21,7 +22,8 @@ class ShipmentController extends Controller
              $data = DB::table('shipments')
                     ->join('shipment_types', 'shipments.shipment_type_id', '=', 'shipment_types.id' )
                     ->join('couriers', 'shipments.courier_id', '=', 'couriers.id' )
-                    ->get(array('shipments.id as id', 'shipments.tracking_number as tracking_number','shipment_types.name as shipment_type_id', 'couriers.name as courier_id', 'shipments.remarks as remarks' ));
+                    ->orderBy('shipments.id', 'desc')
+                    ->get(array('shipments.id as id', 'shipments.tracking_number as tracking_number','shipment_types.name as shipment_type_id', 'couriers.name as courier_id','shipments.created_at as shipment_create_date', 'shipments.remarks as remarks' ));
             return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
@@ -35,8 +37,14 @@ class ShipmentController extends Controller
                     ->rawColumns(['action'])
                     ->make(true);
         }
+        
+        $shipment_types = ShipmentType::latest()->get();
 
-        return view('pages.shipments');
+        $couriers = Courier::latest()->get();
+
+        // dd($shipment_types[1]->name);
+
+        return view('pages.shipments', compact('shipment_types', 'couriers'));
     }
 
     
@@ -44,15 +52,17 @@ class ShipmentController extends Controller
     {
         $request->validate([
                           
-             'name' => 'required|unique:shipments',
+             'tracking_number' => 'required|unique:shipments',
             ], [
-            'name.required' => 'Shipment name is required',
+            'tracking_number.required' => 'Tracking Number is required.',
+            'tracking_number.unique' => 'Tracking Number already exist!',
         ]);    
         
         Shipment::updateOrCreate(['id' => $request->id],
-                ['shipment_type_id' => $request->shipment_type_id,'courier_id' => $request->courier_id, 'tracking_number' => $request->tracking_number, 'remarks' => $request->remarks ]);        
+                ['shipment_type_id' => $request->shipment_type_id,'courier_id' => $request->courier_id, 'tracking_number' => $request->tracking_number, 'remarks' => $request->remarks ]); 
 
-        return response()->json(['success'=>'Shipment saved successfully!']);
+    Alert::success('Success Title', 'Success Message');
+        return back()->withInput()->with('success', 'Saved successfully');
     }
    
     public function edit($id)
