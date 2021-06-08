@@ -48,13 +48,15 @@ Route::resource('menifest','ManifestController')->middleware('auth');
 
 Route::get('all-menifests', 'ManifestController@all_menifests')->name('all-menifests')->middleware('auth');
 Route::post('save-menifest', 'ManifestController@store_menifest')->name('save-menifest')->middleware('auth');
-Route::get('add-menifest-list/{id}', 'ManifestController@create_menifest')->name('add-menifest-list')->middleware('auth');
+Route::get('view-menifest-list/{id}', 'ManifestController@view_menifest_list')->name('view-menifest-list')->middleware('auth');
+Route::get('view-menifest-list-data', 'ManifestController@view_menifest_list_data')->name('view-menifest-list-data')->middleware('auth');
+Route::get('create-menifest-list', 'ManifestController@create_menifest_list')->name('create-menifest-list')->middleware('auth');
 
 
-Route::get('single-product-outward', 'SinglePackListController@single_product_outward')->name('single-product-outward')->middleware('auth');
-Route::get('single-packlist', 'SinglePackListController@single_packlist')->name('single-packlist')->middleware('auth');
-Route::post('single-packlist', 'SinglePackListController@single_packlist_store')->name('single-packlist')->middleware('auth');
-Route::post('single-packlist-pdf', 'SinglePackListController@single_packlist_pdf')->name('single-packlist-pdf')->middleware('auth');
+Route::get('single-product-outward', 'SinglePacklistController@single_product_outward')->name('single-product-outward')->middleware('auth');
+Route::get('single-packlist', 'SinglePacklistController@single_packlist')->name('single-packlist')->middleware('auth');
+Route::post('single-packlist', 'SinglePacklistController@single_packlist_store')->name('single-packlist')->middleware('auth');
+Route::post('single-packlist-pdf', 'SinglePacklistController@single_packlist_pdf')->name('single-packlist-pdf')->middleware('auth');
 
 
 Route::get('product_name/{id}', 'ProductController@product_name')->name('product_name')->middleware('auth');

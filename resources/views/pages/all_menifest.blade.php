@@ -12,7 +12,7 @@
                             <div class="page-title">
                                 <h1>All Menifest
                                     <a href="javascript:void(0)" class="btn btn-success m-b-10 m-l-5" id="createNewMenifest">
-                                            <i class="fa fa-plus"></i> Add New Menifest
+                                            <i class="fa fa-plus"></i> Create New Menifest
                                     </a>
                                    
                                 </h1>
@@ -143,16 +143,9 @@
         $('#ajaxModel').modal('show');
     });
 
-    $('body').on('click', '.editCategory', function () {
+    $('body').on('click', '.viewMenifest', function () {
       var id = $(this).data('id');
-      $.get("categories" +'/' + id +'/edit', function (data) {
-          $('#modelHeading').html("Edit Category");
-          $('#saveBtn').val("edit-categorys");
-          $('#ajaxModel').modal('show');
-          $('#category_id').val(data.id);
-          $('#name').val(data.name);
-          $('#saveBtn').html('Update');
-      })
+     location.href = 'view-menifest-list/'+id;
    });
 
     
@@ -178,6 +171,9 @@
             event.preventDefault();
         }
     });
+
+    
+
 
   });
 </script>

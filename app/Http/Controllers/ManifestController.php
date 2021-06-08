@@ -37,7 +37,7 @@ class ManifestController extends Controller
                     ->addColumn('action', function($row){
 
                            $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-success btn-sm exportMenifest">Export</a>';
-                           $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-default btn-sm viewMenifest">view</a>';
+                           $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="View Menifest List" class="btn btn-default btn-sm viewMenifest">View List</a>';
 
                            $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-info btn-sm editMenifest">Edit</a>';
 
@@ -97,10 +97,27 @@ class ManifestController extends Controller
         return view('pages.create_menifest', compact('menifest','shipment_types','couriers'));
     }
 
-    public function create_menifest(Request $request)
+    public function view_menifest_list($id)
     {
         
-        if ($request->ajax()) {
+            $menifest = Menifest::find($id);   
+            // dd($menifest);
+
+            $shipment_types = ShipmentType::latest()->get();
+
+            $couriers = Courier::latest()->get();  
+
+
+
+            return view('pages.create_menifest', compact('menifest','shipment_types','couriers'));
+       
+   
+    }
+
+    public function view_menifest_list_data(Request $request)
+    {
+        
+             if ($request->ajax()) {
             //$data = Shipment::latest()->get();
              $data = DB::table('shipments')
                     ->join('shipment_types', 'shipments.shipment_type_id', '=', 'shipment_types.id' )
@@ -120,14 +137,13 @@ class ManifestController extends Controller
                     ->rawColumns(['action'])
                     ->make(true);
         }
-        
-        $shipment_types = ShipmentType::latest()->get();
 
-        $couriers = Courier::latest()->get();
-        return view('pages.create_menifest', compact('shipment_types','couriers'));
+            return view('pages.create_menifest');
        
    
     }
+
+
     public function manifest_courier_name($id){
         $courier = Courier::latest()->get();
         $output = '';

@@ -9,9 +9,12 @@
                     <div class="col-lg-8 p-r-0 title-margin-right">
                         <div class="page-header">
                             <div class="page-title">
-                                <h1>{{$menifest->name}} Menifest 
+                                <h1>{{$menifest->name}} 
                                      <a href="{{url('manifest')}}" class="btn btn-success m-b-10 m-l-5">
                                             Print Menifest
+                                    </a>
+                                    <a href="{{url('/all-menifests')}}" class="btn btn-success m-b-10 m-l-5">
+                                            All Menifest
                                     </a>
                                    
                                 </h1>
@@ -23,8 +26,8 @@
                         <div class="page-header">
                             <div class="page-title">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="{{url('/')}}">All Menifest</a></li>
-                                    <li class="breadcrumb-item active">{{$menifest->name}} Menifest</li>
+                                    <li class="breadcrumb-item"><a href="{{url('/all-menifests')}}">All Menifest</a></li>
+                                    <li class="breadcrumb-item active">{{$menifest->name}}</li>
                                 </ol>
                             </div>
                         </div>
@@ -172,7 +175,7 @@
     var table = $('.data-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ url('shipments') }}",
+        ajax: "{{ url('view-menifest-list-data) }}",
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
             {data: 'shipment_type_id', name: 'shipment_type_id'},
