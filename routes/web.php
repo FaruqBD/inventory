@@ -8,6 +8,7 @@ use App\Http\Controllers\ShipmentController;
 use App\Http\Controllers\ShipmentTypeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CourierController;
+use App\Http\Controllers\ManifestController;
 
 
 
@@ -48,9 +49,14 @@ Route::resource('menifest','ManifestController')->middleware('auth');
 
 Route::get('all-menifests', 'ManifestController@all_menifests')->name('all-menifests')->middleware('auth');
 Route::post('save-menifest', 'ManifestController@store_menifest')->name('save-menifest')->middleware('auth');
+Route::get('delete-menifest/{id}', 'ManifestController@delete_menifest')->name('delete-menifest')->middleware('auth');
 Route::get('view-menifest-list/{id}', 'ManifestController@view_menifest_list')->name('view-menifest-list')->middleware('auth');
+Route::post('update-menifest-list', 'ManifestController@update_menifest_list')->name('update-menifest-list')->middleware('auth');
+Route::get('delete-menifest-list/{id}', 'ManifestController@delete_menifest_list')->name('delete-menifest-list')->middleware('auth');
+Route::get('view-menifest-list/shipments/edit/{id}', 'ShipmentController@edit')->name('view-menifest-list/shipments/edit/{id}')->middleware('auth');
 Route::get('view-menifest-list-data', 'ManifestController@view_menifest_list_data')->name('view-menifest-list-data')->middleware('auth');
 Route::get('create-menifest-list', 'ManifestController@create_menifest_list')->name('create-menifest-list')->middleware('auth');
+Route::get('menifest-export/{id}', [ManifestController::class, 'menifest_export'])->name('menifest-export')->middleware('auth');
 
 
 Route::get('single-product-outward', 'SinglePacklistController@single_product_outward')->name('single-product-outward')->middleware('auth');
@@ -72,8 +78,11 @@ Route::get('packlists-export', 'PackListController@packlist_export')->name('pack
 Route::get('clear-packlist', 'PackListController@clear_packlist')->name('clear-packlist')->middleware('auth');
 
 
-Route::get('shipment_type/{id}', 'ShipmentController@shipment_type')->name('shipment_type')->middleware('auth');
-Route::get('courier_name/{id}', 'ShipmentController@courier_name')->name('courier_name')->middleware('auth');
+Route::get('shipment_type/{id}', 'ShipmentController@shipment_type')->name('shipment_type/{id}')->middleware('auth');
+Route::get('courier_name/{id}', 'ShipmentController@courier_name')->name('courier_name/{id}')->middleware('auth');
+Route::get('view-menifest-list/shipment_type/{id}', 'ShipmentController@shipment_type')->name('view-menifest-list/shipment_type/{id}')->middleware('auth');
+Route::get('view-menifest-list/courier_name/{id}', 'ShipmentController@courier_name')->name('view-menifest-list/courier_name/{id}')->middleware('auth');
+Route::post('view-menifest-list/shipments', 'ShipmentController@store')->name('view-menifest-list/shipments')->middleware('auth');
 Route::get('manifest_courier_name/{id}', 'ManifestController@manifest_courier_name')->name('manifest_courier_name')->middleware('auth');
 
 Route::get('products-import-export', [ProductController::class, 'fileImportExport'])->middleware('auth');

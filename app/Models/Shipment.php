@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Shipment extends Model
 {
     use HasFactory;
-    protected $fillable =  [ 'shipment_type_id', 'courier_id', 'tracking_number','remarks', 'vehicle', 'executive'];
+    protected $fillable =  [ 'shipment_type_id', 'courier_id', 'tracking_number','remarks', 'vehicle', 'executive', 'menifest_id'];
 }

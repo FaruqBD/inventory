@@ -148,24 +148,20 @@
      location.href = 'view-menifest-list/'+id;
    });
 
+     $('body').on('click', '.exportMenifest', function () {
+      var id = $(this).data('id');
+     location.href = 'menifest-export/'+id;
+   });
+
     
-    $('body').on('click', '.deleteCategory', function () {
+    $('body').on('click', '.deleteMenifest', function () {
 
   var txt;
         var r = confirm("Are you sure you want to delete?");
         if (r == true) {
-            
-        var id = $(this).data("id");
-        $.ajax({
-            type: "DELETE",
-            url: "categories"+'/'+id,
-            success: function (data) {
-                table.draw();
-            },
-            error: function (data) {
-                console.log('Error:', data);
-            }
-        });
+                var id = $(this).data("id");
+                location.href = "{{url('delete-menifest')}}/"+id;
+
         } else {
             
             event.preventDefault();

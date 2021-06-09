@@ -25,7 +25,7 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="{{ url('shipments') }}">All Shipments</a>
           <a class="dropdown-item" href="{{ url('all-menifests') }}">All Menifests</a>
-          <a class="dropdown-item" href="{{ url('menifest') }}">Print Menifest</a>
+          <!-- <a class="dropdown-item" href="{{ url('menifest') }}">Print Menifest</a> -->
           <a class="dropdown-item" href="{{ url('tracking-number-import') }}">Tracking Number Import</a>
         </div>
       </li>

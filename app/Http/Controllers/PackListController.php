@@ -21,23 +21,14 @@ class PackListController extends Controller
 {
     public function index(Request $request)
     {
-        // $data = DB::table('packlists')
-        //             ->join('products', 'packlists.product_name', '=', 'products.id' )
-        //             ->join('product_names', 'products.product_name_id', '=', 'product_names.id' )
-        //             ->orderBy('packlists.id', 'desc') 
-        //             ->get();     
-
-         
-        //             dd($data);
-            
+        
 
         if ($request->ajax()) {
 
            $data = DB::table('packlists')
                     ->join('products', 'packlists.product_id', '=', 'products.id' )
                     ->join('product_names', 'products.product_name_id', '=', 'product_names.id' )
-                    ->orderBy('packlists.id', 'desc') 
-                    // ->get();                           
+                    ->orderBy('packlists.id', 'desc')    
                     ->get(['packlists.id as id','products.product_name_id as product_name_id','godown_id','product_id','packlists.godown as godown','packlists.available_qty as available_qty','packlists.required_qty as required_qty','product_names.name as name']);
 
             

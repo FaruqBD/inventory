@@ -50,6 +50,27 @@ class ShipmentController extends Controller
     
     public function store(Request $request)
     {
+        // dd($request->shipment_id);
+        $request->validate([
+                          
+             'tracking_number' => 'required|unique:shipments',
+            ], [
+            'tracking_number.required' => 'Tracking Number is required.',
+            'tracking_number.unique' => 'Tracking Number already exist!',
+        ]);    
+        
+        Shipment::updateOrCreate(['id' => $request->shipment_id],
+                ['shipment_type_id' => $request->shipment_type_id,'courier_id' => $request->courier_id, 'tracking_number' => $request->tracking_number, 'vehicle' => $request->vehicle, 'executive' => $request->executive, 'menifest_id'=> $request->menifest_id, 'remarks' => $request->remarks ]); 
+
+    Alert::success('Success Title', 'Success Message');
+        return back()->withInput()->with('success', 'Saved successfully');
+    }
+
+
+
+
+    public function menifest_store(Request $request)
+    {
         $request->validate([
                           
              'tracking_number' => 'required|unique:shipments',
@@ -65,6 +86,9 @@ class ShipmentController extends Controller
         return back()->withInput()->with('success', 'Saved successfully');
     }
    
+
+
+
     public function edit($id)
     {
         $Shipment = Shipment::find($id);
