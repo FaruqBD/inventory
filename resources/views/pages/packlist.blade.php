@@ -75,9 +75,7 @@
                           <div class="col-md-3">
                             <label class="control-label">Select Godown</label>
                             <select class="form-control form-white"name="godown" id="godown">
-								 @foreach($godowns as $godown)
-                                    <option id= "godown" value="{{ $godown->id }}">{{ $godown->name }}</option>
-                                @endforeach
+								
 							</select>
                             <input type="hidden" id="product_name_id">
                           </div>

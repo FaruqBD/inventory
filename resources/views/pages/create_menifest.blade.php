@@ -1,7 +1,19 @@
 @extends('layouts.master')
  <meta name="csrf-token" content="{{ csrf_token() }}">
 @section('content')
+<script type="text/javascript">
 
+ function playSound(filename){
+  var mp3Source = '<source src="' + filename + '.mp3" type="audio/mpeg">';
+  var oggSource = '<source src="' + filename + '.ogg" type="audio/ogg">';
+  var embedSource = '<embed hidden="true" autostart="true" loop="false" src="' + filename +'.mp3">';
+  document.getElementById("sound").innerHTML='<audio autoplay="autoplay">' + mp3Source + oggSource + embedSource + '</audio>';
+}
+
+   
+</script>
+<button onclick="playSound('../scan');">Play</button>  
+<div id="sound"></div>
     <div class="content-wrap">
         <div class="main">
             <div class="container-fluid">
@@ -12,11 +24,11 @@
                                 <h1>{{$menifest->name}} 
 
                                      <a href="{{url('menifest-export')}}/{{$menifest->id}}" class="btn btn-success m-b-10 m-l-5" >
-                                            Print Menifest
+                                            Print Manifest
                                     </a>
 
                                     <a href="{{url('/all-menifests')}}" class="btn btn-success m-b-10 m-l-5">
-                                            All Menifest
+                                            All Manifest
                                     </a>
                                
                                    
@@ -29,7 +41,7 @@
                         <div class="page-header">
                             <div class="page-title">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="{{url('/all-menifests')}}">All Menifest</a></li>
+                                    <li class="breadcrumb-item"><a href="{{url('/all-menifests')}}">All Manifest</a></li>
                                     <li class="breadcrumb-item active">{{$menifest->name}}</li>
                                 </ol>
                             </div>
@@ -48,6 +60,10 @@
                 @endif
 
                 @if(session('success'))
+                <script>
+                    playSound('../scan');
+
+                </script>
                     <div class="alert alert-success text-center">{{session('success')}}</div>
                 @endif
 
@@ -91,15 +107,7 @@
                                  
                             </select>
                           </div>
-                          <div class="col-md-3">
-                            <label class="control-label">Tracking Number</label>
-                            <input class="form-control form-white" type="text" name="tracking_number"  required />
-                             @if ($errors->has('tracking_number'))
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $errors->first('tracking_number') }}</strong>
-                            </span>
-                            @endif
-                          </div>
+                         
                           <div class="col-md-2">
                             <label class="control-label">Vehicle No</label>
                             <input class="form-control form-white" type="text" value="{{ old('vehicle') }}" name="vehicle" required/>
@@ -108,10 +116,19 @@
                             <label class="control-label">Executive Name</label>
                             <input class="form-control form-white" type="text" value="{{ old('executive') }}" name="executive" required/>
                           </div>
+                           <div class="col-md-3">
+                            <label class="control-label">Tracking Number</label>
+                            <input class="form-control form-white" type="text" id="tracking_number_submit" name="tracking_number"  required />
+                             @if ($errors->has('tracking_number'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('tracking_number') }}</strong>
+                            </span>
+                            @endif
+                          </div>
 
                            
                           <div class="col-md-12">
-                           <button type="button" class="btn btn-success" onclick="event.preventDefault(); this.closest('form').submit();">Save Item</button>
+                           <button type="button" class="btn btn-success" onclick="event.preventDefault(); this.closest('form').submit();" id="submitBtn">Save Item</button>
                         </div>
                         </div>
                       </form>
@@ -133,10 +150,10 @@
                                                     <th >No</th>
                                                     <th>Shipment Type</th>
                                                     <th>Courier Name</th>
-                                                    <th>Tracking Number</th>
-                                                    <th>Date</th>
                                                     <th>Vehicle No</th>
                                                     <th>Executive Name</th>
+                                                    <th>Tracking Number</th>
+                                                    <th>Date</th>
                                                     <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
@@ -147,11 +164,11 @@
                                                     <td>{{$n++}}</td>
                                                     <td>{{$row->shipment_type_id}}</td>
                                                     <td>{{$row->courier_id}}</td>
-                                                    <td>{{$row->tracking_number}}</td>
-                                                    <td>{{$row->shipment_create_date}}</td>
                                                     <td>{{$row->vehicle}}</td>
                                                     <td>{{$row->executive}}</td>
-                                                    <td>
+                                                    <td>{{$row->tracking_number}}</td>
+                                                    <td>{{ date('d-M-y', strtotime($row->shipment_create_date)) }}</td>
+                                                    <td class="text-center">
                                                        <a href="javascript:void(0)" data-toggle="tooltip"  data-id="{{$row->id}}" data-original-title="Edit" class="btn btn-info btn-sm editItem">Edit</a> 
                                                        <a href="javascript:void(0)" data-toggle="tooltip"  data-id="{{$row->id}}" data-original-title="Delete" class="btn btn-danger btn-sm deleteItem">Delete</a> 
 
@@ -313,7 +330,7 @@
         }
 
 
-    $("#tracking_number").keyup(function(event) {
+    $("#tracking_number_submit").keyup(function(event) {
     if (event.keyCode === 13) {
         $("#submitBtn").click();
     }
@@ -339,6 +356,8 @@
 
 
   });
+
+
 
    
 </script>

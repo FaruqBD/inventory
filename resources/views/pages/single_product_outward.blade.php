@@ -55,7 +55,7 @@
 	                           
 	                             <h3>Single Product Outward</h3>
 	                        </div>
-                              	<form id="singleProductOutward" name="singleProductOutward" class="form-horizontal" action="{{ url('single-packlist') }}" method="POST">
+                              	<form id="singleProductOutward" name="singleProductOutward" class="form-horizontal" action="{{ url('single-packlist-store') }}" method="POST">
 			                    {!! csrf_field() !!}
 			                    
 			                     <div class="form-group">

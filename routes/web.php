@@ -9,6 +9,8 @@ use App\Http\Controllers\ShipmentTypeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CourierController;
 use App\Http\Controllers\ManifestController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 
 
 
@@ -45,7 +47,14 @@ Route::resource('couriers','CourierController')->middleware('auth');
 Route::resource('customers','CustomerController')->middleware('auth');
 Route::resource('packlists','PackListController')->middleware('auth');
 Route::resource('menifest','ManifestController')->middleware('auth');
+Route::resource('crms','CRMController')->middleware('auth');
 
+Route::resource('users','UserController')->middleware('auth');
+Route::resource('profile','UserController')->middleware('auth');
+Route::get('users-delete/{id}','UserController@destroy')->middleware('auth');
+Route::get('crms-delete/{id}','CRMController@destroy')->middleware('auth');
+Route::get('crm-details/{id}','CRMController@details')->middleware('auth');
+Route::post('crm-post-update','CRMController@crm_post_update')->middleware('auth');
 
 Route::get('all-menifests', 'ManifestController@all_menifests')->name('all-menifests')->middleware('auth');
 Route::post('save-menifest', 'ManifestController@store_menifest')->name('save-menifest')->middleware('auth');
@@ -61,7 +70,7 @@ Route::get('menifest-export/{id}', [ManifestController::class, 'menifest_export'
 
 Route::get('single-product-outward', 'SinglePacklistController@single_product_outward')->name('single-product-outward')->middleware('auth');
 Route::get('single-packlist', 'SinglePacklistController@single_packlist')->name('single-packlist')->middleware('auth');
-Route::post('single-packlist', 'SinglePacklistController@single_packlist_store')->name('single-packlist')->middleware('auth');
+Route::post('single-packlist-store', 'SinglePacklistController@single_packlist_store')->name('single-packlist-store')->middleware('auth');
 Route::post('single-packlist-pdf', 'SinglePacklistController@single_packlist_pdf')->name('single-packlist-pdf')->middleware('auth');
 
 
@@ -80,6 +89,7 @@ Route::get('clear-packlist', 'PackListController@clear_packlist')->name('clear-p
 
 Route::get('shipment_type/{id}', 'ShipmentController@shipment_type')->name('shipment_type/{id}')->middleware('auth');
 Route::get('courier_name/{id}', 'ShipmentController@courier_name')->name('courier_name/{id}')->middleware('auth');
+
 Route::get('view-menifest-list/shipment_type/{id}', 'ShipmentController@shipment_type')->name('view-menifest-list/shipment_type/{id}')->middleware('auth');
 Route::get('view-menifest-list/courier_name/{id}', 'ShipmentController@courier_name')->name('view-menifest-list/courier_name/{id}')->middleware('auth');
 Route::post('view-menifest-list/shipments', 'ShipmentController@store')->name('view-menifest-list/shipments')->middleware('auth');

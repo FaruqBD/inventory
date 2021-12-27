@@ -17,7 +17,7 @@
                             <div class="card">
                             	<div class="login-logo">
 	                           
-	                             <h3>Print Menifest</h3>
+	                             <h3>Print Manifest</h3>
 	                        </div>
                               	<form method="POST" action="{{ url('manifest') }}">
 	            					@csrf

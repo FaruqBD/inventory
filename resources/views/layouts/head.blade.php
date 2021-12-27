@@ -9,6 +9,9 @@
       <li class="nav-item active">
         <a class="nav-link" href="{{ url('/') }}">Home <span class="sr-only">(current)</span></a>
       </li>
+      <!-- <li class="nav-item active">
+        <a class="nav-link" href="{{ url('/profile') }}">Profile <span class="sr-only">(current)</span></a>
+      </li> -->
       
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="{{ url('products') }}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Products</a>
@@ -24,9 +27,15 @@
         <a class="nav-link dropdown-toggle" href="{{ url('shipments') }}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shipments</a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="{{ url('shipments') }}">All Shipments</a>
-          <a class="dropdown-item" href="{{ url('all-menifests') }}">All Menifests</a>
+          <a class="dropdown-item" href="{{ url('all-menifests') }}">All Manifests</a>
           <!-- <a class="dropdown-item" href="{{ url('menifest') }}">Print Menifest</a> -->
           <a class="dropdown-item" href="{{ url('tracking-number-import') }}">Tracking Number Import</a>
+        </div>
+      </li>
+       <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">CRM</a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{{ url('crms') }}">All CRM </a>
         </div>
       </li>
 
@@ -40,7 +49,11 @@
           <a class="dropdown-item" href="{{ url('shipment-types') }}">Shipment Types </a>
         </div>
       </li>
-     
+      @if(Auth::user()->role_id == 1)
+      <li class="nav-item active">
+        <a class="nav-link" href="{{ url('/users') }}">Users <span class="sr-only">(current)</span></a>
+      </li>
+     @endif
     </ul>
     @if(Auth::user())
       <form method="POST" action="{{ route('logout') }}" class="form-inline my-2 my-lg-0">

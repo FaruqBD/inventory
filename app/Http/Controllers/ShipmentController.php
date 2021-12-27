@@ -63,7 +63,7 @@ class ShipmentController extends Controller
                 ['shipment_type_id' => $request->shipment_type_id,'courier_id' => $request->courier_id, 'tracking_number' => $request->tracking_number, 'vehicle' => $request->vehicle, 'executive' => $request->executive, 'menifest_id'=> $request->menifest_id, 'remarks' => $request->remarks ]); 
 
     Alert::success('Success Title', 'Success Message');
-        return back()->withInput()->with('success', 'Saved successfully');
+        return back()->withInput()->with('success', 'Saved successfully6');
     }
 
 

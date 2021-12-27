@@ -10,9 +10,9 @@
                     <div class="col-lg-8 p-r-0 title-margin-right">
                         <div class="page-header">
                             <div class="page-title">
-                                <h1>All Menifest
+                                <h1>All Manifest
                                     <a href="javascript:void(0)" class="btn btn-success m-b-10 m-l-5" id="createNewMenifest">
-                                            <i class="fa fa-plus"></i> Create New Menifest
+                                            <i class="fa fa-plus"></i> Create New Manifest
                                     </a>
                                    
                                 </h1>
@@ -25,7 +25,7 @@
                             <div class="page-title">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
-                                    <li class="breadcrumb-item active">All Menifest</li>
+                                    <li class="breadcrumb-item active">All Manifest</li>
                                 </ol>
                             </div>
                         </div>
@@ -61,7 +61,7 @@
                                             <thead>
                                                 <tr>
                                                     <th width="15%">No</th>
-                                                    <th>Menifest Name</th>
+                                                    <th>Manifest Name</th>
                                                     <th>Created Date</th>
                                                     <th width="30%" class="text-center">Action</th>
                                                 </tr>
@@ -97,7 +97,7 @@
                     {!! csrf_field() !!}
                    <input type="hidden" name="menifest_id" id="menifest_id">
                     <div class="form-group">
-                        <label for="name" class="col-sm-4 control-label">Menifest Name</label>
+                        <label for="name" class="col-sm-4 control-label">Manifest Name</label>
                         <div class="col-sm-12">
                             <input type="text" class="form-control" id="name" name="name" placeholder="Menifest Name" value="" required="">
                         </div>

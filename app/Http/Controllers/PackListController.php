@@ -28,8 +28,9 @@ class PackListController extends Controller
            $data = DB::table('packlists')
                     ->join('products', 'packlists.product_id', '=', 'products.id' )
                     ->join('product_names', 'products.product_name_id', '=', 'product_names.id' )
+                    ->join('godowns', 'products.godown_id', '=', 'godowns.id' )
                     ->orderBy('packlists.id', 'desc')    
-                    ->get(['packlists.id as id','products.product_name_id as product_name_id','godown_id','product_id','packlists.godown as godown','packlists.available_qty as available_qty','packlists.required_qty as required_qty','product_names.name as name']);
+                    ->get(['packlists.id as id','products.product_name_id as product_name_id','godown_id','product_id','godowns.name as godown','packlists.available_qty as available_qty','packlists.required_qty as required_qty','product_names.name as name']);
 
             
             return Datatables::of($data)
@@ -52,11 +53,7 @@ class PackListController extends Controller
                             ->orderBy('product_names.name', 'asc')                            
                             ->get()->unique('name');
                             // dd($product_names);
-               
-
-        $godowns = Godown::latest()->get();
-         // dd($godowns);
-        return view('pages.packlist',compact('product_names', 'godowns'));
+        return view('pages.packlist',compact('product_names'));
     }
 
 
@@ -66,23 +63,36 @@ class PackListController extends Controller
 
         // dd($request->product_id);
         $request->validate([
-                          
-             'product_id' => 'required|unique:packlists',
              'available_qty' => 'required',
              'required_qty' => 'required',
             ], [
-            'product_id.unique' => 'Product name already exist!',
             'available_qty.required' => 'Available quantity is required.',
             'required_qty.required' => 'Required quantity is required.',
         ]);    
 
         
-         $godown = Godown::find($request->godown);
-       
-        Packlist::updateOrCreate(['id' => 0],
-                ['product_id' => $request->product_id, 'godown' => $godown->name,'available_qty' => $request->available_qty,'required_qty' => $request->required_qty]);
+         // $godown = Godown::find($request->godown);
+         $packlist = DB::table('packlists')
+                                ->where('product_id', '=', $request->product_id)
+                                ->where('godown', '=', $request->godown)
+                                ->first();
+         
+         if($packlist)
+         {
+                $id = $packlist->id;
+         }
+         else {
+            $id = 0;
+         }
+        Packlist::updateOrCreate(['id' => $id],
+                ['product_id' => $request->product_id, 'godown' => $request->godown,'available_qty' => $request->available_qty,'required_qty' => $request->required_qty]);
         
-        $data = Product::find($request->product_id);
+        $data = DB::table('products')
+                        ->where('id','=', $request->product_id)
+                        ->where('godown_id','=', $request->godown)
+                        ->first();
+        // dd($data->id);
+        $data = Product::find($data->id);
         $data->quantity = $request->available_qty-$request->required_qty;
         $data->save();
 
